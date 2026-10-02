@@ -1,0 +1,97 @@
+name: Build Nuvv Connect Windows
+
+on:
+  push:
+    branches:
+      - nuvv-desktop
+      - main
+      - master
+  pull_request:
+    branches:
+      - nuvv-desktop
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Nuvv Connect (Windows x64)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository & submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pystache six graphviz
+
+      - name: Install Build Tools (NASM, YASM, Doxygen, NSIS)
+        run: |
+          choco install nasm yasm doxygen.install nsis -y --no-progress
+          echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "C:\Program Files (x86)\NSIS" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Set up Visual Studio Developer Environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Install Qt 5.15.2 (MSVC 2019 x64)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '5.15.2'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+          modules: 'qtgraphicaleffects qtquickcontrols qtquickcontrols2'
+          install-deps: 'true'
+
+      - name: Configure CMake
+        run: |
+          mkdir build
+          cd build
+          cmake .. `
+            -G "Visual Studio 17 2022" `
+            -A x64 `
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo `
+            -DENABLE_APP_PACKAGING=YES `
+            -DENABLE_UPDATE_CHECK=NO `
+            -DENABLE_UNIT_TESTS=NO `
+            -DENABLE_TESTS=NO `
+            -DCMAKE_PREFIX_PATH="${{ env.Qt5_Dir }}"
+
+      - name: Build Nuvv Connect
+        run: |
+          cd build
+          cmake --build . --config RelWithDebInfo --parallel 4
+
+      - name: Install and Package
+        run: |
+          cd build
+          cmake --install . --config RelWithDebInfo
+
+      - name: Upload Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NuvvConnect-Windows-Installer
+          path: |
+            build/OUTPUT/packages/*
+          if-no-files-found: warn
+
+      - name: Upload Standalone Binaries Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NuvvConnect-Windows-Binaries
+          path: |
+            build/OUTPUT/bin/*
+          if-no-files-found: warn
