@@ -40,6 +40,7 @@ jobs:
           choco install nasm yasm doxygen.install nsis -y --no-progress
           echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "C:\Program Files (x86)\NSIS" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "C:\msys64\usr\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Set up Visual Studio Developer Environment
         uses: ilammy/msvc-dev-cmd@v1
@@ -53,7 +54,6 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          modules: 'qtgraphicaleffects qtquickcontrols qtquickcontrols2'
           install-deps: 'true'
 
       - name: Configure CMake
@@ -68,7 +68,7 @@ jobs:
             -DENABLE_UPDATE_CHECK=NO `
             -DENABLE_UNIT_TESTS=NO `
             -DENABLE_TESTS=NO `
-            -DCMAKE_PREFIX_PATH="${{ env.Qt5_Dir }}"
+            -DCMAKE_PREFIX_PATH="${{ env.Qt5_DIR }}"
 
       - name: Build Nuvv Connect
         run: |
@@ -79,13 +79,17 @@ jobs:
         run: |
           cd build
           cmake --install . --config RelWithDebInfo
+          cpack -C RelWithDebInfo
 
       - name: Upload Installer Artifact
         uses: actions/upload-artifact@v4
         with:
           name: NuvvConnect-Windows-Installer
           path: |
+            build/OUTPUT/Packages/*
             build/OUTPUT/packages/*
+            build/Packages/*
+            build/*.exe
           if-no-files-found: warn
 
       - name: Upload Standalone Binaries Artifact
@@ -95,3 +99,4 @@ jobs:
           path: |
             build/OUTPUT/bin/*
           if-no-files-found: warn
+
