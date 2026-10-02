@@ -2,6 +2,10 @@
 
 *~
 .*
+!.gitignore
+!.gitlab-ci.yml
+!.gitlab-ci-files/
+!.github/
 \#*\#
 .#.*
 
