@@ -55,7 +55,12 @@ function unlockView () {
 }
 
 function setView (view, props, callback) {
-	if(view == 'Home' && !Linphone.SettingsModel.getShowHomePage()) view = 'Assistant';
+  var isConfigured = Linphone.AccountSettingsModel.accounts && Linphone.AccountSettingsModel.accounts.length > (Linphone.SettingsModel.showLocalSipAccount ? 1 : 0);
+  if (!isConfigured) {
+    view = 'Assistant';
+  } else if (view == 'Home' && !Linphone.SettingsModel.getShowHomePage()) {
+    view = 'Assistant';
+  }
   function apply (view, props, showWindow, callback) {
 	if(showWindow)
 		Linphone.App.smartShowWindow(window)

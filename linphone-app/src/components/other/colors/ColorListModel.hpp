@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2021 Belledonne Communications SARL.
  *
  * This file is part of linphone-desktop
@@ -60,59 +60,59 @@ class ColorListModel : public ProxyListModel {
 		QSharedPointer<ColorModel> color;
 		ADD_COLOR("a", "transparent", "Generic transparent color.")
 		
-		ADD_COLOR("c", "#CBCBCB", "Button pressed, separatos, fields.")
-		ADD_COLOR("d", "#5A585B", "Text (Ephemerals)")
-		ADD_COLOR("e", "#F3F3F3", "Chat text area Background")
-		ADD_COLOR("f", "#E8E8E8", "Border color")
-		ADD_COLOR("g", "#6B7A86", "SIP Address; Text of Contact, question popup; Selected button.")
-		ADD_COLOR("h", "#687680", "Others")
+		ADD_COLOR("c", "#E2E8F0", "Button pressed, separatos, fields.")
+		ADD_COLOR("d", "#718096", "Text (Secondary/Labels)")
+		ADD_COLOR("e", "#F4F7FB", "Chat text area Background")
+		ADD_COLOR("f", "#E2E8F0", "Border color")
+		ADD_COLOR("g", "#718096", "SIP Address; Text of Contact, question popup; Selected button.")
+		ADD_COLOR("h", "#718096", "Others")
 		
-		// Primary color.
-		ADD_COLOR("i", "#FF5E00", "Primary color.")//263D86
+		// Primary color (Nuvv Deep Blue #0A3B74).
+		ADD_COLOR("i", "#0A3B74", "Primary corporate color.")
 		ADD_COLOR_WITH_LINK_MODE("primary_d", "", "Primary color for deactivated items.", "i", ColorModel::CONTEXT_DEACTIVATED)
 		ADD_COLOR_WITH_LINK_MODE("m", "", "Primary color for clicked items.", "i", ColorModel::CONTEXT_PRESSED)
 		ADD_COLOR_WITH_LINK_MODE("b", "", "Primary color for hovered items.", "i", ColorModel::CONTEXT_HOVERED)
-		ADD_COLOR("secondary_h", "#4B5964", "Secondary color for hovered items.")
-		ADD_COLOR("n", "#A1A1A1", "Primary color for pressed button")
-		ADD_COLOR("o", "#D0D8DE", "Primary color for disabled button")
+		ADD_COLOR("secondary_h", "#0D4B94", "Secondary color for hovered items.")
+		ADD_COLOR("n", "#CBD5E0", "Primary color for pressed button")
+		ADD_COLOR("o", "#E2E8F0", "Primary color for disabled button")
 		
-		ADD_COLOR("outgoing_bg","#FFEEE5","Outgoing message background")
-		ADD_COLOR("incoming_bg","#F3F3F3","Incoming message background")
+		ADD_COLOR("outgoing_bg","#E6F4F8","Outgoing message background")
+		ADD_COLOR("incoming_bg","#F4F7FB","Incoming message background")
 		
-		ADD_COLOR("outgoing_reply_mark_bg","#FF9E67","Outgoing reply message mark background")
-		ADD_COLOR("incoming_reply_mark_bg","#9B9B9B","Incoming reply message mark background")
+		ADD_COLOR("outgoing_reply_mark_bg","#00A896","Outgoing reply message mark background")
+		ADD_COLOR("incoming_reply_mark_bg","#A0AEC0","Incoming reply message mark background")
 		
-		ADD_COLOR("reply_file_bg","#F4F4F4","File icon background in reply")
-		ADD_COLOR("extension_file_border","#DEDEDE","File icon border in reply")
+		ADD_COLOR("reply_file_bg","#FFFFFF","File icon background in reply")
+		ADD_COLOR("extension_file_border","#E2E8F0","File icon border in reply")
 		
-		ADD_COLOR("primary_accept", "#9ECD1D", "Primary color for accepting button")
+		ADD_COLOR("primary_accept", "#00A896", "Primary color for accepting button (Teal)")
 		
-		ADD_COLOR("j", "#4B5964", "Username, Background cancel button hovered.")
+		ADD_COLOR("j", "#051D3B", "Username, Background cancel button hovered.")
 		
 		// Popups, home, call, assistant and settings background.
 		ADD_COLOR("k", "#FFFFFF", "Popups, home, call, assistant and settings background.")
 		
-		ADD_COLOR("l", "#000000", "Generic Black color")
+		ADD_COLOR("l", "#1A202C", "Generic Dark color / Main Text")
 		
-		ADD_COLOR("p", "#17A81A", "Progress bar.")
+		ADD_COLOR("p", "#00A896", "Progress bar.")
 		
 		ADD_COLOR("q", "#FFFFFF", "Fields, backgrounds and text color on some items")
 		
-		ADD_COLOR("r", "#909fab", "Background button normal.")
+		ADD_COLOR("r", "#0A3B74", "Background button normal.")
 		
-		ADD_COLOR("s", "#96be64", "Security")
-		ADD_COLOR("unsecure", "#FF0000", "Unsecure")
+		ADD_COLOR("s", "#22C55E", "Security & Connected Status")
+		ADD_COLOR("unsecure", "#EF4444", "Unsecure")
 		
 		
-		ADD_COLOR("t", "#C2C2C2", "Title Header")
-		ADD_COLOR("u", "#D2D2D2", "Menu border (message)")
-		ADD_COLOR("v", "#E7E7E7", "Menu pressed (message)")
-		ADD_COLOR("w", "#EDEDED", "Menu background (conversation)")
+		ADD_COLOR("t", "#051D3B", "Title Header (Deep Navy)")
+		ADD_COLOR("u", "#E2E8F0", "Menu border (message)")
+		ADD_COLOR("v", "#EDF2F7", "Menu pressed (message)")
+		ADD_COLOR("w", "#F4F7FB", "Menu background (conversation)")
 		
-		ADD_COLOR("x", "#D0D8DE", "Background unselected round button")
+		ADD_COLOR("x", "#CBD5E0", "Background unselected round button")
 		
 		ADD_COLOR("y", "#FFFFFF", "Gradient dialog start")
-		ADD_COLOR("z", "#E2E2E2", "Gradient dialog end")
+		ADD_COLOR("z", "#F4F7FB", "Gradient dialog end")
 		
 		ADD_COLOR("aa", "#E1E1E1", "Chat text outside background")
 		ADD_COLOR("ab", "#979797", "Chat heading section text")

@@ -10,164 +10,163 @@ import App.Styles 1.0
 // =============================================================================
 
 ColumnLayout {
-	spacing: 0
-	
+	id: nuvvOnboarding
+	spacing: 20
+	anchors.centerIn: parent
+	Layout.alignment: Qt.AlignCenter
+	width: Math.min(parent.width * 0.85, 480)
+
+	AssistantModel {
+		id: assistantModel
+		property string qrcode
+	}
+
+	Connections {
+		target: SettingsModel
+		onRemoteProvisioningChanged: {
+			activationStatus.text = qsTr('Configuração recebida com sucesso! Reiniciando...')
+			App.restart()
+		}
+		onRemoteProvisioningNotChanged: {
+			activationStatus.text = qsTr('Falha ao obter provisionamento. Verifique o endereço ou token informado.')
+			activateButton.enabled = true
+		}
+	}
+
+	Connections {
+		target: assistantModel
+		onQRCodeFound: {
+			provisionUrlInput.text = token
+			SettingsModel.remoteProvisioning = token
+		}
+		onProvisioningTokenReceived: {
+			provisionUrlInput.text = token
+			SettingsModel.remoteProvisioning = token
+		}
+	}
+
 	// ---------------------------------------------------------------------------
-	// Info.
+	// Cabeçalho e Identidade Visual Nuvv
 	// ---------------------------------------------------------------------------
-	property bool isVisible: SettingsModel.getShowForcedAssistantPage() < 0
-	Item {
-		id: infoItem
-		Layout.fillHeight: true
+	ColumnLayout {
+		Layout.alignment: Qt.AlignHCenter
 		Layout.fillWidth: true
-		visible: parent.isVisible
-		ColumnLayout {
-			anchors.verticalCenter: parent.verticalCenter
-			spacing: 0
-			
-			height: AssistantHomeStyle.info.height
-			width: parent.width
-			
-			Icon {
-				//anchors.horizontalCenter: parent.horizontalCenter
-				Layout.alignment: Qt.AlignHCenter
-				
-				icon: 'home_account_assistant'
-				iconSize: AssistantHomeStyle.info.iconSize
+		spacing: 8
+
+		Icon {
+			Layout.alignment: Qt.AlignHCenter
+			icon: 'linphone_logo'
+			iconSize: 72
+		}
+
+		Text {
+			Layout.alignment: Qt.AlignHCenter
+			font {
+				bold: true
+				pixelSize: 22
 			}
-			
+			color: '#0A3B74' // Deep Blue Nuvv
+			text: 'Nuvv Connect'
+		}
+
+		Text {
+			Layout.alignment: Qt.AlignHCenter
+			font.pixelSize: 13
+			color: '#718096'
+			text: qsTr('Comunicação corporativa segura e integrada')
+		}
+	}
+
+	// ---------------------------------------------------------------------------
+	// Card de Ativação
+	// ---------------------------------------------------------------------------
+	Rectangle {
+		Layout.fillWidth: true
+		Layout.preferredHeight: cardLayout.implicitHeight + 36
+		color: '#FFFFFF'
+		radius: 12
+		border.color: '#E2E8F0'
+		border.width: 1
+
+		ColumnLayout {
+			id: cardLayout
+			anchors {
+				top: parent.top
+				left: parent.left
+				right: parent.right
+				margins: 18
+			}
+			spacing: 14
+
 			Text {
-				height: AssistantHomeStyle.info.title.height
-				Layout.fillWidth: true
-				
-				color: AssistantHomeStyle.info.title.colorModel.color
-				elide: Text.ElideRight
-				
-				horizontalAlignment: Text.AlignHCenter
-				verticalAlignment: Text.AlignVCenter
-				
+				text: qsTr('Ativação do Dispositivo')
 				font {
 					bold: true
-					pointSize: AssistantHomeStyle.info.title.pointSize
+					pixelSize: 15
 				}
-				
-				text: qsTr('homeTitle')
+				color: '#051D3B'
 			}
-			
+
 			Text {
-				height: AssistantHomeStyle.info.description.height
+				text: qsTr('Informe o endereço do servidor ou token fornecido pela sua equipe de TI:')
+				font.pixelSize: 12
+				color: '#718096'
+				wrapMode: Text.WordWrap
 				Layout.fillWidth: true
-				//width: parent.width
-				
-				color: AssistantHomeStyle.info.description.colorModel.color
-				elide: Text.ElideRight
-				font.pointSize: AssistantHomeStyle.info.description.pointSize
-				horizontalAlignment: Text.AlignHCenter
-				verticalAlignment: Text.AlignVCenter
-				
-				text: qsTr('homeDescription')
 			}
-			
-			
+
+			TextField {
+				id: provisionUrlInput
+				Layout.fillWidth: true
+				placeholderText: 'https://provision.nuvv.com.br ou Token'
+				selectByMouse: true
+			}
+
+			TextButtonA {
+				id: activateButton
+				Layout.fillWidth: true
+				Layout.preferredHeight: 44
+				enabled: provisionUrlInput.text.trim().length > 0 && cguCheckBox.checked
+				text: qsTr('Ativar Dispositivo')
+
+				onClicked: {
+					enabled = false
+					activationStatus.text = qsTr('Conectando ao provisionamento Nuvv...')
+					SettingsModel.remoteProvisioning = provisionUrlInput.text.trim()
+				}
+			}
+
+			TextButtonB {
+				id: qrCodeButton
+				Layout.fillWidth: true
+				Layout.preferredHeight: 38
+				visible: SettingsModel.isQRCodeAvailable()
+				text: qsTr('Escanear QR Code de Ativação')
+				onClicked: {
+					assistant.pushView('FetchRemoteConfiguration', {})
+				}
+			}
+
+			Text {
+				id: activationStatus
+				Layout.fillWidth: true
+				horizontalAlignment: Text.AlignHCenter
+				font.pixelSize: 12
+				color: '#00A896'
+				wrapMode: Text.WordWrap
+				text: ''
+			}
 		}
 	}
-	
+
 	// ---------------------------------------------------------------------------
-	// Buttons.
+	// Termos e Políticas
 	// ---------------------------------------------------------------------------
-	CheckBoxText{
+	CheckBoxText {
 		id: cguCheckBox
-		Layout.bottomMargin: 10
-		Layout.maximumWidth: infoItem.width
-		Layout.alignment: Qt.AlignHCenter
-		visible: applicationVendor != '' && ConstantsCpp.CguUrl != '' && ConstantsCpp.PrivatePolicyUrl != '' && parent.isVisible				
-		checked: SettingsModel.cguAccepted
-		onCheckedChanged: SettingsModel.cguAccepted = checked
-		
-		//: 'I accept %1's %2terms of use%3 and %4privacy policy%5' : where %1 is the vendor name and other %n are internal keywords that encapsulate links.
-		text: qsTr('homeCgu').arg(applicationVendor).arg('< a href="'+ConstantsCpp.CguUrl+'">').arg('</a>').arg('<a href="'+ConstantsCpp.PrivatePolicyUrl+'">').arg('</a>')
-	}
-	GridView {
-		id: buttons
-		
 		Layout.alignment: Qt.AlignHCenter
 		Layout.fillWidth: true
-		Layout.maximumWidth: AssistantHomeStyle.buttons.maxWidth
-		Layout.preferredHeight: AssistantHomeStyle.buttons.height
-		Layout.leftMargin: AssistantStyle.leftMargin
-		Layout.rightMargin: AssistantStyle.rightMargin
-		Layout.bottomMargin: AssistantStyle.bottomMargin
-		
-		cellHeight: height / 2
-		cellWidth: width / 2
-		enabled: cguCheckBox.checked
-		visible: parent.isVisible
-		
-		delegate: Item {
-			height: buttons.cellHeight
-			width: buttons.cellWidth
-			
-			TextButtonA {
-				anchors {
-					fill: parent
-					margins: AssistantHomeStyle.buttons.spacing
-				}
-				
-				enabled: cguCheckBox.checked && SettingsModel[$viewType.charAt(0).toLowerCase() + $viewType.slice(1) + "Enabled"]
-				text: $text.replace('%1', Qt.application.name.toUpperCase())
-				
-				onClicked:{ assistant.pushView($view, $props) }
-				Component.onCompleted: {
-					if (SettingsModel.getShowForcedAssistantPage() == index) {
-						assistant.pushView($view, $props)
-					}
-				}
-			}
-		}
-		Connections{
-			target: SettingsModel
-			onAssistantSupportsPhoneNumbersChanged: {
-				if(!SettingsModel.useWebview()){
-					buttonsModel.get(0).$view = !SettingsModel.assistantSupportsPhoneNumbers ? 'CreateAppSipAccountWithEmail' : 'CreateAppSipAccount'
-				}
-			}
-		}
-		model: ListModel {
-			id: buttonsModel
-			Component.onCompleted: {
-				insert(0, {
-						   $text: qsTr('createAppSipAccount'),
-						   $view: SettingsModel.useWebview()
-									? 'CreateAppSipAccountWithWebView'
-									: !SettingsModel.assistantSupportsPhoneNumbers
-										? 'CreateAppSipAccountWithEmail'
-										: 'CreateAppSipAccount',
-						   $viewType: 'CreateAppSipAccount',
-						   $props: SettingsModel.useWebview() ? {defaultUrl: SettingsModel.assistantRegistrationUrl, defaultLogoutUrl:SettingsModel.assistantLogoutUrl, configFilename: 'create-app-sip-account.rc'}
-																: {}
-					   })
-				append({
-						   $text: qsTr('useAppSipAccount'),
-						   $view: SettingsModel.useWebview() ? 'CreateAppSipAccountWithWebView' : 'UseAppSipAccount',
-						   $viewType: 'UseAppSipAccount',
-						   $props: SettingsModel.useWebview() ? {defaultUrl: SettingsModel.assistantLoginUrl, defaultLogoutUrl:SettingsModel.assistantLogoutUrl, configFilename: 'use-app-sip-account.rc'}
-																: {}
-					   })
-				append({
-						   $text: qsTr('useOtherSipAccount'),
-						   $view: 'UseOtherSipAccount',
-						   $viewType: 'UseOtherSipAccount',
-						   $props: {}
-					   })
-				append( {
-						   $text: qsTr('fetchRemoteConfiguration'),
-						   $view: 'FetchRemoteConfiguration',
-						   $viewType: 'FetchRemoteConfiguration',
-						   $props: {}
-					   })
-			}
-		}
-		
-		interactive: false
+		checked: true
+		text: qsTr('Concordo com os <a href="%1">Termos de Uso</a> e a <a href="%2">Política de Privacidade</a> da Nuvv.').arg(ConstantsCpp.CguUrl).arg(ConstantsCpp.PrivatePolicyUrl)
 	}
 }

@@ -18,7 +18,7 @@
     <message>
         <source>noAccount</source>
         <extracomment>&apos;No account configured&apos; : Status text when there is no configured account.</extracomment>
-        <translation>Conta não configurada</translation>
+        <translation>Ramal não configurado</translation>
     </message>
 </context>
 <context>
@@ -2021,7 +2021,7 @@ Clique aqui: &lt;a href=&quot;%1&quot;&gt;%1 &lt;/a&gt;
     <message>
         <source>openChats</source>
         <extracomment>&apos;Open chats&apos; : Tooltip for a button that open the conversations view</extracomment>
-        <translation>Abrir conversar</translation>
+        <translation>Abrir conversas</translation>
     </message>
     <message>
         <source>openContacts</source>
@@ -2035,7 +2035,7 @@ Clique aqui: &lt;a href=&quot;%1&quot;&gt;%1 &lt;/a&gt;
     </message>
     <message>
         <source>lastProvisioningFailed</source>
-        <translation>Provisão remota falhou. O link pode ter sido usado ou expirou. Se ele foi fornecido a você, entre em contato com seu administrador.</translation>
+        <translation>O provisionamento remoto corporativo falhou. O endereço ou token pode estar incorreto ou expirado. Entre em contato com a equipe de TI da sua empresa.</translation>
     </message>
     <message>
         <source>newVersionAvailable</source>

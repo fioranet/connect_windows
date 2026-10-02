@@ -37,7 +37,7 @@ public:
 
 	//----------------------------------------------------------------------------------
 
-	static constexpr char DefaultLocale[] = "en";
+	static constexpr char DefaultLocale[] = "pt_BR";
 	static constexpr char DefaultFont[] = "Noto Sans";
 	static constexpr int DefaultFontPointSize = 10;
 #ifdef __APPLE__
@@ -54,32 +54,32 @@ public:
 	static constexpr int VersionUpdateCheckInterval = 86400000; // 24 hours in milliseconds.
 #endif                                                          // ifdef ENABLE_UPDATE_CHECK
 
-	static constexpr char DefaultXmlrpcUri[] = "https://subscribe.linphone.org:444/wizard.php";
-	static constexpr char DefaultUploadLogsServer[] = "https://files.linphone.org/http-file-transfer-server/hft.php";
-	static constexpr char RetiredUploadLogsServer[] = "https://www.linphone.org:444/lft.php";
+	static constexpr char DefaultXmlrpcUri[] = "";
+	static constexpr char DefaultUploadLogsServer[] = "";
+	static constexpr char RetiredUploadLogsServer[] = "";
 	static constexpr char DefaultContactParameters[] = "message-expires=2419200";
 	static constexpr char DefaultContactParametersOnRemove[] = "message-expires=0";
 	static constexpr int DefaultExpires = 600;
 	static constexpr int DefaultPublishExpires = 120;
-	static constexpr char DownloadUrl[] = "https://www.linphone.org/en/technical-corner/linphone";
-	static constexpr char VersionCheckReleaseUrl[] = "https://download.linphone.org/releases";
-	static constexpr char VersionCheckNightlyUrl[] = "https://download.linphone.org/snapshots";
-	static constexpr char PasswordRecoveryUrl[] = "https://subscribe.linphone.org/recovery/email";
-	static constexpr char CguUrl[] = "https://www.linphone.org/en/terms-of-use";
-	static constexpr char PrivatePolicyUrl[] = "https://linphone.org/en/privacy-policy";
-	static constexpr char ContactUrl[] = "https://www.linphone.org/en/contact";
-	static constexpr char TranslationUrl[] = "https://weblate.linphone.org/projects/linphone/linphone-desktop-6-0/";
+	static constexpr char DownloadUrl[] = "https://www.nuvv.com.br/empresarial";
+	static constexpr char VersionCheckReleaseUrl[] = "https://www.nuvv.com.br/releases";
+	static constexpr char VersionCheckNightlyUrl[] = "https://www.nuvv.com.br/snapshots";
+	static constexpr char PasswordRecoveryUrl[] = "https://www.nuvv.com.br/recuperar-senha";
+	static constexpr char CguUrl[] = "https://www.nuvv.com.br/termos-de-uso";
+	static constexpr char PrivatePolicyUrl[] = "https://www.nuvv.com.br/politica-de-privacidade";
+	static constexpr char ContactUrl[] = "https://www.nuvv.com.br/contato";
+	static constexpr char TranslationUrl[] = "https://www.nuvv.com.br";
 
 	static constexpr int MaxMosaicParticipants =
 	    6; // From 7, the mosaic quality will be limited to avoid useless computations
 
 	static constexpr char LinphoneBZip2_exe[] = "https://download.linphone.org/releases/windows/tools/bzip2/bzip2.exe";
 	static constexpr char LinphoneBZip2_dll[] = "https://download.linphone.org/releases/windows/tools/bzip2/bzip2.dll";
-	static constexpr char DefaultRlsUri[] = "sips:rls@sip.linphone.org";
-	static constexpr char DefaultLogsEmail[] = "linphone-desktop@belledonne-communications.com";
+	static constexpr char DefaultRlsUri[] = "";
+	static constexpr char DefaultLogsEmail[] = "suporte@nuvv.com.br";
 
-	static constexpr char DefaultFlexiAPIURL[] = "https://subscribe.linphone.org/api/"; // Need "/" at the end
-	static constexpr char RemoteProvisioningURL[] = "https://subscribe.linphone.org/api/provisioning";
+	static constexpr char DefaultFlexiAPIURL[] = "https://provision.nuvv.com.br/api/"; // Need "/" at the end
+	static constexpr char RemoteProvisioningURL[] = "https://provision.nuvv.com.br/api/provisioning";
 	static constexpr char RemoteProvisioningBasicAuth[] = "";
 	// OAuth2 settings
 	static constexpr char OAuth2AuthorizationUrl[] = "";
@@ -88,7 +88,7 @@ public:
 	static constexpr char OAuth2Identifier[] = "";
 	static constexpr char OAuth2Password[] = "";
 	static constexpr char OAuth2Scope[] = "";
-	static constexpr char DefaultOAuth2RemoteProvisioningHeader[] = "x-linphone-oauth2-token";
+	static constexpr char DefaultOAuth2RemoteProvisioningHeader[] = "x-nuvv-oauth2-token";
 
 	Q_PROPERTY(QString PasswordRecoveryUrl MEMBER PasswordRecoveryUrl CONSTANT)
 	Q_PROPERTY(QString CguUrl MEMBER CguUrl CONSTANT)
@@ -99,10 +99,10 @@ public:
 	Q_PROPERTY(QStringList reactionsList READ getReactionsList CONSTANT)
 
 	// For Webviews
-	static constexpr char DefaultAssistantRegistrationUrl[] = "https://subscribe.linphone.org/register";
-	static constexpr char DefaultAssistantLoginUrl[] = "https://subscribe.linphone.org/login";
-	static constexpr char DefaultAssistantLogoutUrl[] = "https://subscribe.linphone.org/logout";
-	static constexpr char DefaultRouteAddress[] = "sip:sip.linphone.org;transport=tls";
+	static constexpr char DefaultAssistantRegistrationUrl[] = "https://www.nuvv.com.br/empresarial";
+	static constexpr char DefaultAssistantLoginUrl[] = "https://www.nuvv.com.br/login";
+	static constexpr char DefaultAssistantLogoutUrl[] = "https://www.nuvv.com.br/logout";
+	static constexpr char DefaultRouteAddress[] = "";
 
 	//--------------
 
@@ -116,15 +116,12 @@ public:
 	//								LINPHONE
 	//--------------------------------------------------------------------------------
 
-	static constexpr char LinphoneDomain[] = "sip.linphone.org"; // Use for checking if config are a Linphone
+	static constexpr char LinphoneDomain[] = "nuvv.com.br"; // Use for checking if config are Nuvv
 	static constexpr char WindowIconPath[] = ":/assets/images/linphone_logo.svg";
 	static constexpr char ApplicationMinimalQtVersion[] = "5.10.0";
-	static constexpr char DefaultConferenceURI[] =
-	    "sip:conference-factory@sip.linphone.org"; // Default for a Linphone account
-	static constexpr char DefaultVideoConferenceURI[] =
-	    "sip:videoconference-factory@sip.linphone.org"; // Default for a Linphone account
-	static constexpr char DefaultLimeServerURL[] =
-	    "https://lime.linphone.org/lime-server/lime-server.php"; // Default for a Linphone account
+	static constexpr char DefaultConferenceURI[] = "";
+	static constexpr char DefaultVideoConferenceURI[] = "";
+	static constexpr char DefaultLimeServerURL[] = "";
 
 	static constexpr char PathAssistantConfig[] = "/" EXECUTABLE_NAME "/assistant/";
 	static constexpr char PathAvatars[] = "/avatars/";

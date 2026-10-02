@@ -17,8 +17,11 @@ update_presence_model_timestamp_before_publish_expires_refresh=1
 max_conference_size=vga
 
 [ui]
-use_qrcode=0
-assistant_supports_phone_numbers/readonly=0
+use_qrcode=1
+assistant_supports_phone_numbers/readonly=1
+locale=pt_BR
 
-[account_creator]
-backend=1
+[assistant]
+domain=nuvv.com.br
+xmlrpc_url=
+

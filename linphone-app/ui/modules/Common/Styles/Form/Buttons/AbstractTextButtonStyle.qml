@@ -8,7 +8,7 @@ import Units 1.0
 QtObject {
   property QtObject background: QtObject {
     property int height: 30
-    property int radius: 4
+    property int radius: 8
     property int width: 160
   }
 

@@ -124,12 +124,17 @@ ApplicationWindow {
 					notifyNewVersionInstallWhenLoaded = false
 					Utils.infoDialog(window, qsTr('newVersionInstalled')+"\n"+Qt.application.version)
 				}
-				switch(SettingsModel.getShowDefaultPage()) {
-					case 1 : window.setView('Calls'); break;
-					case 2 : window.setView('Conversations'); break;
-					case 3 : ContactsListModel.update(); window.setView('Contacts'); break;
-					case 4 : window.setView('Conferences'); break;
-				default:{}
+				var isConfigured = AccountSettingsModel.accounts.length > ((SettingsModel.showLocalSipAccount ? 1 : 0))
+				if (!isConfigured) {
+					window.setView('Assistant')
+				} else {
+					switch(SettingsModel.getShowDefaultPage()) {
+						case 1 : window.setView('Calls'); break;
+						case 2 : window.setView('Conversations'); break;
+						case 3 : ContactsListModel.update(); window.setView('Contacts'); break;
+						case 4 : window.setView('Conferences'); break;
+						default: window.setView('Calls'); break;
+					}
 				}
 		}
 		
@@ -159,6 +164,7 @@ ApplicationWindow {
 				Layout.fillWidth: true
 				Layout.preferredHeight: MainWindowStyle.toolBar.height
 				hoverEnabled : true
+				visible: AccountSettingsModel.accounts.length > ((SettingsModel.showLocalSipAccount ? 1 : 0))
 				
 				background: MainWindowStyle.toolBar.background
 				
@@ -277,7 +283,7 @@ ApplicationWindow {
 					ActionButton {
 						id: newChatGroupButton
 						isCustom: true
-						backgroundRadius: 4
+						backgroundRadius: 8
 						colorSet: MainWindowStyle.buttons.newChatGroup
 
 						//: 'Start a chat room' : Tooltip to illustrate a button
@@ -301,7 +307,7 @@ ApplicationWindow {
 					ActionButton {
 						id:newConferenceButton
 						isCustom: true
-						backgroundRadius: 4
+						backgroundRadius: 8
 						colorSet: MainWindowStyle.buttons.newConference
 						visible: SettingsModel.conferenceEnabled
 						enabled: SettingsModel.videoConferenceEnabled
@@ -339,6 +345,7 @@ ApplicationWindow {
 				// Main menu.
 				Rectangle{
 					id: mainMenu
+					visible: AccountSettingsModel.accounts.length > ((SettingsModel.showLocalSipAccount ? 1 : 0))
 					property int currentMenu: contentLoader.source == 'qrc:/ui/views/App/Main/Home.qml' || contentLoader.source == 'qrc:/ui/views/App/Main/Assistant.qml' ? 0
 											: contentLoader.source == 'qrc:/ui/views/App/Main/Calls.qml' ? 1
 											: contentLoader.source == 'qrc:/ui/views/App/Main/Conversations.qml' ? 2
@@ -346,7 +353,7 @@ ApplicationWindow {
 											: contentLoader.source == 'qrc:/ui/views/App/Main/Conferences.qml' ? 4
 											: -1
 					Layout.fillHeight: true
-					Layout.preferredWidth: MainWindowStyle.menu.leftMargin + MainWindowStyle.menu.rightMargin + MainWindowStyle.menu.buttonSize
+					Layout.preferredWidth: visible ? (MainWindowStyle.menu.leftMargin + MainWindowStyle.menu.rightMargin + MainWindowStyle.menu.buttonSize) : 0
 					color: '#F3F3F3'
 					ColumnLayout {
 						anchors.fill: parent	
@@ -360,7 +367,7 @@ ApplicationWindow {
 						ActionButton {
 							id: homeButton
 							isCustom: true
-							backgroundRadius: 4
+							backgroundRadius: 8
 							colorSet: MainWindowStyle.buttons.home
 							//: 'Open Home' : Tooltip for a button that open the home view
 							tooltipText : qsTr('openHome')
@@ -370,7 +377,7 @@ ApplicationWindow {
 						}
 						ActionButton {
 							isCustom: true
-							backgroundRadius: 4
+							backgroundRadius: 8
 							colorSet: MainWindowStyle.buttons.callHistoryMenu
 							//: 'Open call history' : Tooltip for a button that open the call history view
 							tooltipText : qsTr('openCalls')
@@ -389,7 +396,7 @@ ApplicationWindow {
 						ActionButton {
 							visible: SettingsModel.standardChatEnabled || SettingsModel.secureChatEnabled
 							isCustom: true
-							backgroundRadius: 4
+							backgroundRadius: 8
 							colorSet: MainWindowStyle.buttons.chatMenu
 							//: 'Open chats' : Tooltip for a button that open the conversations view
 							tooltipText : qsTr('openChats')
@@ -407,7 +414,7 @@ ApplicationWindow {
 						}
 						ActionButton {
 							isCustom: true
-							backgroundRadius: 4
+							backgroundRadius: 8
 							colorSet: MainWindowStyle.buttons.contactsMenu
 							//: 'Open contacts' : Tooltip for a button that open the contacts view
 							tooltipText : qsTr('openContacts')
@@ -421,7 +428,7 @@ ApplicationWindow {
 						ActionButton {
 							visible: SettingsModel.conferenceEnabled
 							isCustom: true
-							backgroundRadius: 4
+							backgroundRadius: 8
 							colorSet: MainWindowStyle.buttons.meetingsMenu
 							//: 'Open meetings' : Tooltip for a button that open the meetings list
 							tooltipText : qsTr('openMeetings')
@@ -436,7 +443,7 @@ ApplicationWindow {
 						}
 						ActionButton {
 							isCustom: true
-							backgroundRadius: 4
+							backgroundRadius: 8
 							colorSet: MainWindowStyle.buttons.settingsMenu
 							
 							toggled: menuBar.isOpenned
