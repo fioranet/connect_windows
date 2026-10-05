@@ -40,6 +40,7 @@ jobs:
           choco install nasm yasm doxygen.install nsis -y --no-progress
           echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "C:\Program Files (x86)\NSIS" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "C:\Program Files\doxygen\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           echo "C:\msys64\usr\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Set up Visual Studio Developer Environment
@@ -68,6 +69,8 @@ jobs:
             -DENABLE_UPDATE_CHECK=NO `
             -DENABLE_UNIT_TESTS=NO `
             -DENABLE_TESTS=NO `
+            -DPython3_ROOT_DIR="${{ env.pythonLocation }}" `
+            -DLINPHONESDK_DOXYGEN_PROGRAM="C:/Program Files/doxygen/bin/doxygen.exe" `
             -DCMAKE_PREFIX_PATH="${{ env.Qt5_DIR }}"
 
       - name: Build Nuvv Connect
