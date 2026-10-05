@@ -67,6 +67,8 @@ jobs:
 
       - name: Configure CMake
         run: |
+          $qtDir = ($env:Qt5_DIR -replace '\\', '/')
+          $pyDir = ($env:pythonLocation -replace '\\', '/')
           mkdir build
           cd build
           cmake .. `
@@ -77,9 +79,9 @@ jobs:
             -DENABLE_UPDATE_CHECK=NO `
             -DENABLE_UNIT_TESTS=NO `
             -DENABLE_TESTS=NO `
-            -DPython3_ROOT_DIR="${{ env.pythonLocation }}" `
+            -DPython3_ROOT_DIR="$pyDir" `
             -DLINPHONESDK_DOXYGEN_PROGRAM="C:/Program Files/doxygen/bin/doxygen.exe" `
-            -DCMAKE_PREFIX_PATH="${{ env.Qt5_DIR }}"
+            -DCMAKE_PREFIX_PATH="$qtDir"
 
       - name: Build Nuvv Connect
         run: |
