@@ -33,7 +33,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pystache six graphviz
+          pip install pystache six graphviz meson ninja
 
       - name: Install Build Tools (NASM, YASM, Doxygen, NSIS)
         run: |
@@ -60,7 +60,10 @@ jobs:
       - name: Ensure Python dependencies in active Python
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pystache six graphviz
+          python -m pip install pystache six graphviz meson ninja
+          $pyDir = Split-Path (Get-Command python).Source
+          $pyScripts = Join-Path $pyDir "Scripts"
+          echo $pyScripts | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Configure CMake
         run: |
